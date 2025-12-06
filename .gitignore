@@ -1,0 +1,5 @@
+SCHEME.md
+.DS_Store
+docker/.DS_Store
+docker/zeek/logs/*.log
+docker/zeek/pcap/*.pcap

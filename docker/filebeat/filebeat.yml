@@ -1,0 +1,29 @@
+filebeat.inputs:
+  - type: filestream
+    id: zeek-json
+    enabled: true
+    paths:
+      - /var/log/zeek/*.log
+
+    parsers:
+      - ndjson:
+          add_error_key: true
+          expand_keys: true
+
+    prospector.scanner.fingerprint.length: 128
+    prospector.scanner.fingerprint.offset: 0
+
+processors:
+  - add_host_metadata: ~
+
+# 关键：不要让 Filebeat 启动时去管 template / datastream
+setup.ilm.enabled: false
+setup.template.enabled: false
+
+output.elasticsearch:
+  hosts: ["https://es01:9200", "https://es02:9200", "https://es03:9200"]
+  username: "elastic"
+  password: "${ELASTIC_PASSWORD}"
+  ssl.certificate_authorities:
+    - "/usr/share/filebeat/certs/ca/ca.crt"
+  index: "zeek-%{+yyyy.MM.dd}"
