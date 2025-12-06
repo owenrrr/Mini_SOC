@@ -74,7 +74,7 @@ docker exec -it docker-filebeat-1 sh -lc 'head -n 1 /var/log/zeek/conn.log'
 
   Metric: Count
 
-- onnection states（bar）
+- Connection states（bar）
 
   X axis: Top values of conn_state.keyword
 

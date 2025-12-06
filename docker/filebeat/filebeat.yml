@@ -15,6 +15,34 @@ filebeat.inputs:
 
 processors:
   - add_host_metadata: ~
+  - add_fields:
+      target: zeek
+      fields:
+        log_type: "unknown"
+  - add_fields:
+      when.contains:
+        log.file.path: "conn.log"
+      target: zeek
+      fields:
+        log_type: "conn"
+  - add_fields:
+      when.contains:
+        log.file.path: "http.log"
+      target: zeek
+      fields:
+        log_type: "http"
+  - add_fields:
+      when.contains:
+        log.file.path: "dns.log"
+      target: zeek
+      fields:
+        log_type: "dns"
+  - timestamp:
+      field: ts
+      layouts:
+        - UNIX
+      ignore_missing: true
+      ignore_failure: true
 
 # 关键：不要让 Filebeat 启动时去管 template / datastream
 setup.ilm.enabled: false
